@@ -1,9 +1,21 @@
 from dotenv import load_dotenv
 import os
 import requests
+import streamlit as st
 
+# ---------------- LOAD ENV ----------------
 load_dotenv()
-API_KEY = os.getenv("RAPIDAPI_KEY")
+
+def get_secret(key):
+    try:
+        return st.secrets[key]   # deployed
+    except:
+        return os.getenv(key)    # local
+
+
+API_KEY = get_secret("RAPIDAPI_KEY")
+if not API_KEY:
+    raise ValueError("❌ RAPIDAPI_KEY not found. Check .env or Streamlit secrets.")
 
 
 def fetch_jobs(query="software developer", location="India"):

@@ -1,12 +1,24 @@
 import smtplib
 import os
+import streamlit as st
 from email.mime.text import MIMEText
 from dotenv import load_dotenv
 
 load_dotenv()
 
-EMAIL_USER = os.getenv("EMAIL_USER")
-EMAIL_PASS = os.getenv("EMAIL_PASS")
+def get_secret(key):
+    try:
+        return st.secrets[key]   # deployed
+    except:
+        return os.getenv(key)    # local
+
+
+EMAIL_USER = get_secret("EMAIL_USER")
+EMAIL_PASS = get_secret("EMAIL_PASS")
+
+# ✅ Safety check (IMPORTANT)
+if not EMAIL_USER or not EMAIL_PASS:
+    raise ValueError("❌ Email credentials missing. Check .env or Streamlit secrets.")
 
 
 def send_otp_email(to_email, otp):
