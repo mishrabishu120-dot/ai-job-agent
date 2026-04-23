@@ -1,0 +1,7 @@
+streamlit>=1.30
+pandas>=1.5
+PyPDF2
+requests
+python-dotenv
+groq
+matplotlib
